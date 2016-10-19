@@ -1,0 +1,183 @@
+<script type="text/javascript" src="http://canvasjs.com/assets/script/canvasjs.min.js"></script> 
+<script type="text/javascript">
+jQuery( document ).ready( function() {
+	$.get("http://lovad.dyndns.org:8080/wwf1/api/analytics.json?dimension=dx:Tcd4jTaWPMI;ss6yrFbNWlP;vBa6BobxanI&dimension=ou:qDG5yqr5pnF&dimension=pe:LAST_4_QUARTERS&displayProperty=NAME&outputIdScheme=UID", function (json) {
+
+		$("#cfm_reg_hav_plan").text(WWF.getValue(json,"wxJgVwtJ0Iz","oYL89W49fVd","qDG5yqr5pnF","2016Q3")); //
+	
+/*jQuery( document ).ready( function() {
+	$.get("http://lovad.dyndns.org:8080/wwf1/api/24/dataValueSets.json?dataSet=qWx1JfPBJ8y&period=2016Q3&orgUnit=qDG5yqr5pnF", function (json) {
+*/
+		//create a data table
+//		$("#cfm_reg_hav_plan").text(WWF.getRawData(json,"wxJgVwtJ0Iz","oYL89W49fVd","qDG5yqr5pnF","2016Q3")); 
+//		$("#cfm_notreg_hav_plan").text(WWF.getRawData(json,"DCzWmqYXfeC","oYL89W49fVd","qDG5yqr5pnF","2016Q3"));//
+	
+
+		//generate a pie chart	
+			var chart = new CanvasJS.Chart("chartContainer",
+			{
+				title:{
+					text: "Rattan CFM %"
+				},
+		                animationEnabled: true,
+				legend:{
+					verticalAlign: "center",
+					horizontalAlign: "left",
+					fontSize: 20,
+					fontFamily: "Helvetica"        
+				},
+				theme: "theme2",
+				data: [
+				{        
+					type: "pie",       
+					indexLabelFontFamily: "Garamond",       
+					indexLabelFontSize: 20,
+					indexLabel: "{label} {y}%",
+					startAngle:-20,      
+					showInLegend: true,
+					toolTipContent:"{legendText} {y}%",
+					dataPoints: [
+						{  y: WWF.getIndicator(json,"Tcd4jTaWPMI","qDG5yqr5pnF","2016Q3"), legendText:"% of FSC actual in Total CFM", label: "FSC" },
+						{  y:  WWF.getIndicator(json,"ss6yrFbNWlP","qDG5yqr5pnF","2016Q3"), legendText:"% of FSC in progress in Total CFM!", label: "FSC in progress" },
+						{  y: WWF.getIndicator(json,"vBa6BobxanI","qDG5yqr5pnF","2016Q3"), legendText:"% of Wellmanaged", label: "Wellmanaged" }
+					]
+				}
+				]
+
+			});
+			chart.render();
+			//end pie chart
+		
+		
+		
+	}); //end get
+})
+
+
+WWF = {
+	//get value from analystic table
+	getValue: function(json, category, DE, orgUnit, periods ){
+		for (var i=0; i < json.rows.length; i++){
+			if (json.rows[i][0] == DE+"."+category && json.rows[i][1] == periods && json.rows[i][2] == orgUnit)
+			{
+				return json.rows[i][3]== null? 0 : parseInt(json.rows[i][3]);
+			}
+		}
+		return 0;
+	},
+	//get indicator
+	getIndicator: function(json, DE, orgUnit, periods ){
+		for (var i=0; i < json.rows.length; i++){
+			if (json.rows[i][0] == DE && json.rows[i][1] == orgUnit && json.rows[i][2] == periods)
+			{
+				return json.rows[i][3]== null? 0 : parseInt(json.rows[i][3]);
+			}
+		}
+		return 0;
+	},
+	
+	//get raw data
+	getRawData: function(json, category, DE, orgUnit, periods ){
+		for (var i=0; i < json.dataValues.length; i++){
+			if (json.dataValues[i].dataElement == DE && json.dataValues[i].categoryOptionCombo == category  
+				&& json.dataValues[i].period == periods && json.dataValues[i].orgUnit == orgUnit)
+			{
+				return json.dataValues[i].value== null? 0 : parseInt(json.dataValues[i].value);
+			}
+		}
+		return 0;
+	}
+
+}
+</script>
+
+<table border="0" cellpadding="0" cellspacing="0" width="857">
+    <colgroup>
+        <col width="248"/>
+        <col width="87" span="7"/>
+    </colgroup>
+    <tbody>
+        <tr height="21">
+            <td height="21" width="248">
+                Type
+            </td>
+            <td colspan="4" width="348">
+                CFM
+            </td>
+            <td colspan="3" width="261">
+                WSBM
+            </td>
+        </tr>
+        <tr height="2">
+            <td height="2" width="248">
+            </td>
+            <td width="87">
+                Reg. for harvesting
+            </td>
+            <td width="87">
+                Not Reg for harvesting
+            </td>
+            <td width="87">
+                FSC in Progress
+            </td>
+            <td width="87">
+                FSC
+            </td>
+            <td width="87">
+                Well-managed
+            </td>
+            <td width="87">
+                FSC in Progress
+            </td>
+            <td width="87">
+                FSC
+            </td>
+        </tr>
+        <tr height="21">
+            <td height="21">
+                RattanVolPlannedSM (Kg)
+            </td>
+            <td>
+				<div id="cfm_reg_hav_plan"></div>
+            </td>
+            <td>
+				<div id="cfm_notreg_hav_plan"></div>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+        </tr>
+        <tr height="21">
+            <td height="21">
+                RattanVolActualSM (kg)
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+        </tr>
+    </tbody>
+</table>
+		
+		
+		
+		<div id="chartContainer" style="height: 300px; width: 100%;"></div>
+		
+
